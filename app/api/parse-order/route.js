@@ -37,17 +37,33 @@ export async function POST(request) {
 CUSTOMER SAID: "${transcript}"
 CURRENT ORDER: ${currentOrderRef}
 
-TASK: Extract items, quantities, and prices from the spoken order.
+TASK: Extract items, quantities, and prices from the spoken order. Be VERY TOLERANT of transcription errors and misrepresentations.
 
 RULES:
-1. **Item Extraction:**
+1. **Item Extraction (FUZZY MATCHING - Handle Transcription Errors):**
    - Extract all food/drink items mentioned
    - Normalize names (e.g., "nasgor" → "nasi goreng", "teh manis" → "teh manis")
    - Handle variations (e.g., "nasi goreng spesial", "nasi goreng biasa")
+   - **HANDLE COMMON TRANSCRIPTION ERRORS:**
+     - Phonetic similarities: "nasi" vs "nasih", "goreng" vs "goring", "ayam" vs "ayem"
+     - Missing/extra letters: "nasi goren", "nasi gorengg", "nas goreng"
+     - Word boundaries: "nasigoreng" vs "nasi goreng"
+     - Common misspellings: "teh manis" vs "te manis", "es teh" vs "esteh"
+     - Number confusion: "dua" vs "duwa", "tiga" vs "tigah"
+   - **FUZZY MATCH STRATEGY:**
+     - If 70%+ similarity to common items, accept it
+     - Prioritize context (if "nasi" is mentioned, likely rice dish)
+     - Use phonetic matching for Indonesian/Malay words
 
-2. **Quantity Detection (FLEXIBLE - seller confirms):**
+2. **Quantity Detection (FLEXIBLE - Handle Transcription Errors):**
    - Default to 1 if not mentioned
    - Recognize specific numbers: "dua", "2", "two", "tiga", "3", "three", etc.
+   - **HANDLE NUMBER TRANSCRIPTION ERRORS:**
+     - "dua" vs "duwa" vs "du a" → 2
+     - "tiga" vs "tigah" vs "ti ga" → 3
+     - "empat" vs "empet" vs "em pat" → 4
+     - "lima" vs "limah" vs "li ma" → 5
+     - "sepuluh" vs "se puluh" vs "10" → 10
    - Handle: "tambah 2" (add 2 more), "ubah jadi 3" (change to 3)
    - **VAGUE QUANTITIES** (mark as needsQuantityConfirmation):
      - "banyak" (many) → suggest 5, mark as vague
@@ -59,25 +75,37 @@ RULES:
      - "porsi" (portion) → suggest 1, mark as vague
    - **NO QUANTITY** mentioned → default to 1, mark as needsQuantityConfirmation
 
-3. **Price Extraction:**
+3. **Price Extraction (Handle Transcription Errors):**
    - Extract prices if mentioned (e.g., "15 ribu", "15000", "15k", "Rp 15.000")
    - Convert to numeric (15 ribu → 15000)
+   - **HANDLE PRICE TRANSCRIPTION ERRORS:**
+     - "ribu" vs "ribuuu" vs "ri bu" → thousands
+     - "15 ribu" vs "15ribu" vs "15 rb" → 15000
+     - "lima belas ribu" vs "limabelas ribu" → 15000
+     - "sepuluh ribu" vs "10 ribu" vs "10k" → 10000
    - If price NOT mentioned, set price to null and mark needsPriceSuggestion
    - Confidence: "high" if explicit, "medium" if implied, "low" if guessed
 
-4. **Action Detection:**
-   - **ADD**: "tambah", "add", "plus", "mau" → Add new items or increment quantity
-   - **UPDATE**: "ubah jadi", "ganti jadi", "make it", "change to" → Set to specific quantity
-   - **REMOVE**: "cancel", "hapus", "buang", "remove", "delete" → Remove items
+4. **Action Detection (Handle Transcription Errors):**
+   - **ADD**: "tambah", "add", "plus", "mau", "tambahin", "tam bah" → Add new items or increment quantity
+   - **UPDATE**: "ubah jadi", "ganti jadi", "make it", "change to", "ubah", "ganti" → Set to specific quantity
+   - **REMOVE**: "cancel", "hapus", "buang", "remove", "delete", "ga jadi", "gajadi" → Remove items
+   - **CONFIRM**: "iya", "yes", "betul", "benar", "ok", "oke" → Confirm current order
 
 5. **Currency:**
    - Default to IDR (Indonesian Rupiah)
    - Recognize: "ribu" (thousands), "k" (thousands), "Rp"
 
-6. **Total Detection:**
-   - If customer mentions total (e.g., "total 35 ribu"), extract it
+6. **Total Detection (Handle Transcription Errors):**
+   - If customer mentions total (e.g., "total 35 ribu", "totalnya 35000", "jadi 35 ribu")
+   - Handle: "total", "totalnya", "jadi", "jadine", "semuanya"
 
-IMPORTANT: This is a MENU-FREE system. Accept ANY item name spoken by the cashier.
+7. **Context Awareness:**
+   - If only seller is speaking (no customer voice detected), treat as seller confirming/clarifying
+   - Seller phrases: "jadi", "berarti", "oke jadi", "total", "bayar"
+   - Customer phrases: "mau", "pesan", "tambah", "saya mau"
+
+IMPORTANT: This is a MENU-FREE system. Accept ANY item name spoken. Be VERY FORGIVING of transcription errors.
 
 Return ONLY valid JSON (no markdown, no code fences):
 
@@ -85,6 +113,8 @@ Return ONLY valid JSON (no markdown, no code fences):
   "items": [
     {
       "name": "nasi goreng",
+      "originalTranscript": "nas goren",
+      "correctionApplied": true,
       "quantity": 2,
       "quantityVague": false,
       "quantityPhrase": "dua",
@@ -107,6 +137,13 @@ Return ONLY valid JSON (no markdown, no code fences):
       "suggestedQuantity": 5,
       "originalPhrase": "banyak",
       "reason": "Vague quantity - seller should confirm"
+    }
+  ],
+  "transcriptionIssues": [
+    {
+      "original": "nas goren",
+      "corrected": "nasi goreng",
+      "confidence": 0.85
     }
   ],
   "extractionConfidence": 0.95,

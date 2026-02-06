@@ -359,6 +359,15 @@ export default function ConversationClient({ currentShift, menuItems }: Props) {
       addApiLog('gemini', 'Gemini Parse Result', response)
       console.log('Parse response:', response)
 
+      // Log transcription corrections if any
+      if (response.transcriptionIssues && response.transcriptionIssues.length > 0) {
+        addApiLog('gemini', 'Transcription Corrections Applied', {
+          corrections: response.transcriptionIssues.map((issue: any) =>
+            `"${issue.original}" → "${issue.corrected}" (${Math.round(issue.confidence * 100)}% confidence)`
+          )
+        })
+      }
+
       // Handle parsed items
       await handleParsedOrder(response)
     } catch (error) {

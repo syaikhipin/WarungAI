@@ -1,24 +1,16 @@
 import { NextResponse } from 'next/server';
-import Groq from 'groq-sdk';
 
 export async function POST(request) {
-  console.log('[SERVER] Transcription API called (Groq Whisper)');
+  console.log('[SERVER] Transcription API called (SenseVoice)');
 
   try {
     // Check if API key is configured
-    if (!process.env.GROQ_API_KEY) {
-      console.error('[SERVER] Groq API key not configured');
+    if (!process.env.SENSEVOICE_API_KEY) {
+      console.error('[SERVER] SenseVoice API key not configured');
       return NextResponse.json({
-        error: 'Groq API key not configured. Please add GROQ_API_KEY to your .env file and restart the dev server.'
+        error: 'SenseVoice API key not configured. Please add SENSEVOICE_API_KEY to your .env file and restart the dev server.'
       }, { status: 500 });
     }
-
-    console.log('[SERVER] Groq API key found');
-
-    // Initialize Groq client
-    const groq = new Groq({
-      apiKey: process.env.GROQ_API_KEY,
-    });
 
     const formData = await request.formData();
     const audioFile = formData.get('file');
@@ -42,26 +34,36 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Audio file too small. Please record for longer.' }, { status: 400 });
     }
 
-    console.log('[SERVER] Sending to Groq Whisper for transcription...');
+    console.log('[SERVER] Sending to SenseVoice for transcription...');
 
-    // Convert the file to a proper format for Groq
-    const arrayBuffer = await audioFile.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    // Create FormData for the external API
+    const apiFormData = new FormData();
+    apiFormData.append('model', 'FunAudioLLM/SenseVoiceSmall');
+    apiFormData.append('file', audioFile);
 
-    // Create a File object that Groq SDK can handle
-    const file = new File([buffer], 'recording.webm', { type: 'audio/webm' });
+    // Get API URL from env or use default
+    const apiUrl = process.env.SENSEVOICE_API_URL || 'https://marine-moll-unipa-72bbad68.koyeb.app/v1/audio/transcriptions';
 
-    const transcription = await groq.audio.transcriptions.create({
-      file: file,
-      model: 'whisper-large-v3',
-      language: 'en', // English
-      response_format: 'text',
+    // Call the SenseVoice API
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.SENSEVOICE_API_KEY}`,
+      },
+      body: apiFormData,
     });
 
-    console.log('[SERVER] Groq transcription successful');
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[SERVER] SenseVoice API error:', response.status, errorText);
+      throw new Error(`API returned ${response.status}: ${errorText}`);
+    }
+
+    const result = await response.json();
+    console.log('[SERVER] SenseVoice transcription successful');
 
     // Extract text from response
-    const text = typeof transcription === 'string' ? transcription : transcription.text || '';
+    const text = result.text || '';
     console.log('[SERVER] Transcribed text:', text);
 
     if (!text) {
@@ -81,17 +83,6 @@ export async function POST(request) {
 
     if (error.message) {
       errorMessage = error.message;
-    } else if (error.response) {
-      errorMessage = `API Error: ${error.response.status} - ${error.response.statusText}`;
-    }
-
-    // Check for specific Groq errors
-    if (error.status === 401) {
-      errorMessage = 'Invalid Groq API key. Please check your GROQ_API_KEY in .env';
-    } else if (error.status === 429) {
-      errorMessage = 'Groq API rate limit exceeded. Please try again later.';
-    } else if (error.status === 400) {
-      errorMessage = 'Invalid audio file format. Please try recording again.';
     }
 
     return NextResponse.json({

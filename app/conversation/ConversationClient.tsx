@@ -115,13 +115,13 @@ export default function ConversationClient({ currentShift, menuItems }: Props) {
   const [showDebugPanel, setShowDebugPanel] = useState(true)
   const [apiLogs, setApiLogs] = useState<Array<{
     timestamp: Date
-    type: 'groq' | 'gemini' | 'error' | 'simulation'
+    type: 'sensevoice' | 'gemini' | 'error' | 'simulation'
     title: string
     data: any
   }>>([])
 
   // Add log entry helper
-  const addApiLog = (type: 'groq' | 'gemini' | 'error' | 'simulation', title: string, data: any) => {
+  const addApiLog = (type: 'sensevoice' | 'gemini' | 'error' | 'simulation', title: string, data: any) => {
     setApiLogs(prev => [...prev.slice(-19), { timestamp: new Date(), type, title, data }])
   }
 
@@ -293,7 +293,7 @@ export default function ConversationClient({ currentShift, menuItems }: Props) {
       const formData = new FormData()
       formData.append('file', audioBlob, 'recording.webm')
 
-      addApiLog('groq', 'Sending audio to Groq Whisper', { size: audioBlob.size, type: audioBlob.type })
+      addApiLog('sensevoice', 'Sending audio to SenseVoice', { size: audioBlob.size, type: audioBlob.type })
 
       const transcribeResponse = await fetch('/api/transcribe', {
         method: 'POST',
@@ -303,11 +303,11 @@ export default function ConversationClient({ currentShift, menuItems }: Props) {
       const transcribeData = await transcribeResponse.json()
 
       if (!transcribeResponse.ok) {
-        addApiLog('error', 'Groq Transcription Failed', transcribeData)
+        addApiLog('error', 'SenseVoice Transcription Failed', transcribeData)
         throw new Error('Transcription failed')
       }
 
-      addApiLog('groq', 'Groq Transcription Result', transcribeData)
+      addApiLog('sensevoice', 'SenseVoice Transcription Result', transcribeData)
 
       const transcription = transcribeData.text
       if (!transcription?.trim()) {
@@ -1495,7 +1495,7 @@ export default function ConversationClient({ currentShift, menuItems }: Props) {
                         <div
                           key={idx}
                           className={`p-2 rounded text-xs ${
-                            log.type === 'groq' ? 'bg-blue-50 border border-blue-200' :
+                            log.type === 'sensevoice' ? 'bg-blue-50 border border-blue-200' :
                             log.type === 'gemini' ? 'bg-purple-50 border border-purple-200' :
                             log.type === 'simulation' ? 'bg-green-50 border border-green-200' :
                             'bg-red-50 border border-red-200'
@@ -1503,7 +1503,7 @@ export default function ConversationClient({ currentShift, menuItems }: Props) {
                         >
                           <div className="flex items-center justify-between mb-1">
                             <Badge variant="outline" className={`text-[10px] ${
-                              log.type === 'groq' ? 'bg-blue-100 text-blue-700' :
+                              log.type === 'sensevoice' ? 'bg-blue-100 text-blue-700' :
                               log.type === 'gemini' ? 'bg-purple-100 text-purple-700' :
                               log.type === 'simulation' ? 'bg-green-100 text-green-700' :
                               'bg-red-100 text-red-700'

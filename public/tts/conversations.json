@@ -1,0 +1,353 @@
+{
+  "simple_order": [
+    {
+      "id": "msg-1",
+      "role": "seller",
+      "text": "Good morning! Welcome to our warung. What would you like to order today?",
+      "audioPath": "/tts/simple_order_msg-1_seller.mp3",
+      "filename": "simple_order_msg-1_seller.mp3"
+    },
+    {
+      "id": "msg-2",
+      "role": "customer",
+      "text": "Hi! I'd like two nasi goreng and one es teh manis please.",
+      "audioPath": "/tts/simple_order_msg-2_customer.mp3",
+      "filename": "simple_order_msg-2_customer.mp3"
+    },
+    {
+      "id": "msg-3",
+      "role": "seller",
+      "text": "Perfect! I've added two nasi goreng at fifteen dollars each, and one es teh manis at five dollars. Would you like anything else?",
+      "audioPath": "/tts/simple_order_msg-3_seller.mp3",
+      "filename": "simple_order_msg-3_seller.mp3",
+      "orderAction": {
+        "type": "add",
+        "items": [
+          {
+            "name": "Nasi Goreng",
+            "quantity": 2,
+            "price": 15
+          },
+          {
+            "name": "Es Teh Manis",
+            "quantity": 1,
+            "price": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "msg-4",
+      "role": "customer",
+      "text": "No, that's everything. Thank you!",
+      "audioPath": "/tts/simple_order_msg-4_customer.mp3",
+      "filename": "simple_order_msg-4_customer.mp3"
+    },
+    {
+      "id": "msg-5",
+      "role": "seller",
+      "text": "Wonderful! Your total comes to thirty five dollars.",
+      "audioPath": "/tts/simple_order_msg-5_seller.mp3",
+      "filename": "simple_order_msg-5_seller.mp3"
+    },
+    {
+      "id": "msg-6",
+      "role": "customer",
+      "text": "Here's forty dollars cash.",
+      "audioPath": "/tts/simple_order_msg-6_customer.mp3",
+      "filename": "simple_order_msg-6_customer.mp3"
+    },
+    {
+      "id": "msg-7",
+      "role": "seller",
+      "text": "Payment received! Your change is five dollars. Order complete! Have a great day!",
+      "audioPath": "/tts/simple_order_msg-7_seller.mp3",
+      "filename": "simple_order_msg-7_seller.mp3",
+      "paymentReceived": {
+        "amount": 40,
+        "change": 5,
+        "method": "CASH"
+      }
+    }
+  ],
+  "negotiation": [
+    {
+      "id": "msg-1",
+      "role": "seller",
+      "text": "Hello! Welcome back. What can I prepare for you?",
+      "audioPath": "/tts/negotiation_msg-1_seller.mp3",
+      "filename": "negotiation_msg-1_seller.mp3"
+    },
+    {
+      "id": "msg-2",
+      "role": "customer",
+      "text": "I want three portions of sate ayam, please.",
+      "audioPath": "/tts/negotiation_msg-2_customer.mp3",
+      "filename": "negotiation_msg-2_customer.mp3"
+    },
+    {
+      "id": "msg-3",
+      "role": "seller",
+      "text": "Sate ayam, excellent choice! I don't have a price set for that item yet. What price would you suggest?",
+      "audioPath": "/tts/negotiation_msg-3_seller.mp3",
+      "filename": "negotiation_msg-3_seller.mp3"
+    },
+    {
+      "id": "msg-4",
+      "role": "customer",
+      "text": "How about eight dollars per portion?",
+      "audioPath": "/tts/negotiation_msg-4_customer.mp3",
+      "filename": "negotiation_msg-4_customer.mp3"
+    },
+    {
+      "id": "msg-5",
+      "role": "seller",
+      "text": "Eight dollars sounds fair! I've added three sate ayam at eight dollars each. That's twenty four dollars total. Anything else?",
+      "audioPath": "/tts/negotiation_msg-5_seller.mp3",
+      "filename": "negotiation_msg-5_seller.mp3",
+      "orderAction": {
+        "type": "add",
+        "items": [
+          {
+            "name": "Sate Ayam",
+            "quantity": 3,
+            "price": 8
+          }
+        ]
+      }
+    },
+    {
+      "id": "msg-6",
+      "role": "customer",
+      "text": "Yes, add two es kopi susu.",
+      "audioPath": "/tts/negotiation_msg-6_customer.mp3",
+      "filename": "negotiation_msg-6_customer.mp3"
+    },
+    {
+      "id": "msg-7",
+      "role": "seller",
+      "text": "Es kopi susu, great! I need a price for that as well. What would be reasonable?",
+      "audioPath": "/tts/negotiation_msg-7_seller.mp3",
+      "filename": "negotiation_msg-7_seller.mp3"
+    },
+    {
+      "id": "msg-8",
+      "role": "customer",
+      "text": "Let's say four fifty each.",
+      "audioPath": "/tts/negotiation_msg-8_customer.mp3",
+      "filename": "negotiation_msg-8_customer.mp3"
+    },
+    {
+      "id": "msg-9",
+      "role": "seller",
+      "text": "Perfect! Added two es kopi susu at four fifty each. Your new total is thirty three dollars. Anything more?",
+      "audioPath": "/tts/negotiation_msg-9_seller.mp3",
+      "filename": "negotiation_msg-9_seller.mp3",
+      "orderAction": {
+        "type": "add",
+        "items": [
+          {
+            "name": "Es Kopi Susu",
+            "quantity": 2,
+            "price": 4.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "msg-10",
+      "role": "customer",
+      "text": "That's all, thanks!",
+      "audioPath": "/tts/negotiation_msg-10_customer.mp3",
+      "filename": "negotiation_msg-10_customer.mp3"
+    },
+    {
+      "id": "msg-11",
+      "role": "seller",
+      "text": "Excellent! Your final total is thirty three dollars.",
+      "audioPath": "/tts/negotiation_msg-11_seller.mp3",
+      "filename": "negotiation_msg-11_seller.mp3"
+    },
+    {
+      "id": "msg-12",
+      "role": "customer",
+      "text": "Here's forty dollars cash.",
+      "audioPath": "/tts/negotiation_msg-12_customer.mp3",
+      "filename": "negotiation_msg-12_customer.mp3"
+    },
+    {
+      "id": "msg-13",
+      "role": "seller",
+      "text": "Payment received! Your change is seven dollars. Order complete! Thank you and see you again!",
+      "audioPath": "/tts/negotiation_msg-13_seller.mp3",
+      "filename": "negotiation_msg-13_seller.mp3",
+      "paymentReceived": {
+        "amount": 40,
+        "change": 7,
+        "method": "CASH"
+      }
+    }
+  ],
+  "complex_order": [
+    {
+      "id": "msg-1",
+      "role": "seller",
+      "text": "Good afternoon! Ready to take your order. What would you like?",
+      "audioPath": "/tts/complex_order_msg-1_seller.mp3",
+      "filename": "complex_order_msg-1_seller.mp3"
+    },
+    {
+      "id": "msg-2",
+      "role": "customer",
+      "text": "I need five nasi goreng, three ayam goreng, and two soto ayam.",
+      "audioPath": "/tts/complex_order_msg-2_customer.mp3",
+      "filename": "complex_order_msg-2_customer.mp3"
+    },
+    {
+      "id": "msg-3",
+      "role": "seller",
+      "text": "Got it! I've added five nasi goreng at fifteen dollars each, three ayam goreng at twelve dollars each, and two soto ayam at ten dollars each. Anything else?",
+      "audioPath": "/tts/complex_order_msg-3_seller.mp3",
+      "filename": "complex_order_msg-3_seller.mp3",
+      "orderAction": {
+        "type": "add",
+        "items": [
+          {
+            "name": "Nasi Goreng",
+            "quantity": 5,
+            "price": 15
+          },
+          {
+            "name": "Ayam Goreng",
+            "quantity": 3,
+            "price": 12
+          },
+          {
+            "name": "Soto Ayam",
+            "quantity": 2,
+            "price": 10
+          }
+        ]
+      }
+    },
+    {
+      "id": "msg-4",
+      "role": "customer",
+      "text": "Actually, make the nasi goreng just three portions instead.",
+      "audioPath": "/tts/complex_order_msg-4_customer.mp3",
+      "filename": "complex_order_msg-4_customer.mp3"
+    },
+    {
+      "id": "msg-5",
+      "role": "seller",
+      "text": "No problem! Updated nasi goreng to three portions. Your current total is one hundred one dollars.",
+      "audioPath": "/tts/complex_order_msg-5_seller.mp3",
+      "filename": "complex_order_msg-5_seller.mp3",
+      "orderAction": {
+        "type": "update",
+        "items": [
+          {
+            "name": "Nasi Goreng",
+            "quantity": 3,
+            "price": 15
+          }
+        ]
+      }
+    },
+    {
+      "id": "msg-6",
+      "role": "customer",
+      "text": "And add four jus mangga please.",
+      "audioPath": "/tts/complex_order_msg-6_customer.mp3",
+      "filename": "complex_order_msg-6_customer.mp3"
+    },
+    {
+      "id": "msg-7",
+      "role": "seller",
+      "text": "Excellent! I've added four jus mangga at five dollars each. Your total is now one hundred twenty one dollars. Anything more?",
+      "audioPath": "/tts/complex_order_msg-7_seller.mp3",
+      "filename": "complex_order_msg-7_seller.mp3",
+      "orderAction": {
+        "type": "add",
+        "items": [
+          {
+            "name": "Jus Mangga",
+            "quantity": 4,
+            "price": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "msg-8",
+      "role": "customer",
+      "text": "Can you also add two kerupuk? How much are those?",
+      "audioPath": "/tts/complex_order_msg-8_customer.mp3",
+      "filename": "complex_order_msg-8_customer.mp3"
+    },
+    {
+      "id": "msg-9",
+      "role": "seller",
+      "text": "I don't have a price for kerupuk yet. What would you like to pay for them?",
+      "audioPath": "/tts/complex_order_msg-9_seller.mp3",
+      "filename": "complex_order_msg-9_seller.mp3"
+    },
+    {
+      "id": "msg-10",
+      "role": "customer",
+      "text": "Two dollars each is fine.",
+      "audioPath": "/tts/complex_order_msg-10_customer.mp3",
+      "filename": "complex_order_msg-10_customer.mp3"
+    },
+    {
+      "id": "msg-11",
+      "role": "seller",
+      "text": "Perfect! Added two kerupuk at two dollars each. Your final total is one hundred twenty five dollars. That's everything?",
+      "audioPath": "/tts/complex_order_msg-11_seller.mp3",
+      "filename": "complex_order_msg-11_seller.mp3",
+      "orderAction": {
+        "type": "add",
+        "items": [
+          {
+            "name": "Kerupuk",
+            "quantity": 2,
+            "price": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "msg-12",
+      "role": "customer",
+      "text": "Yes, that's all. Thank you!",
+      "audioPath": "/tts/complex_order_msg-12_customer.mp3",
+      "filename": "complex_order_msg-12_customer.mp3"
+    },
+    {
+      "id": "msg-13",
+      "role": "seller",
+      "text": "Wonderful! One hundred twenty five dollars total.",
+      "audioPath": "/tts/complex_order_msg-13_seller.mp3",
+      "filename": "complex_order_msg-13_seller.mp3"
+    },
+    {
+      "id": "msg-14",
+      "role": "customer",
+      "text": "Here's one hundred fifty dollars cash.",
+      "audioPath": "/tts/complex_order_msg-14_customer.mp3",
+      "filename": "complex_order_msg-14_customer.mp3"
+    },
+    {
+      "id": "msg-15",
+      "role": "seller",
+      "text": "Payment received! Your change is twenty five dollars. Order complete! Thank you for visiting!",
+      "audioPath": "/tts/complex_order_msg-15_seller.mp3",
+      "filename": "complex_order_msg-15_seller.mp3",
+      "paymentReceived": {
+        "amount": 150,
+        "change": 25,
+        "method": "CASH"
+      }
+    }
+  ]
+}

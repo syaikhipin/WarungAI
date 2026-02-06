@@ -1,0 +1,14 @@
+{
+  "name": "WarungAI - Voice POS System",
+  "short_name": "WarungAI",
+  "description": "Voice-powered Point of Sale system for food businesses",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2563eb",
+  "theme_color": "#2563eb",
+  "orientation": "portrait",
+  "icons": [],
+  "categories": ["business", "productivity"],
+  "screenshots": [],
+  "shortcuts": []
+}
